@@ -1,13 +1,15 @@
 {
-  "id": "com.tado.mobile",
+  "id": "com.hayo.tadomobile",
   "version": "1.0.0",
   "compatibility": ">=1.5.0",
   "sdk": 2,
   "name": {
-    "en": "tado.mobile"
+    "en": "Tado Mobile",
+    "nl": "Tado Mobiel"
   },
   "description": {
-    "en": "Adds mobile detection for tado"
+    "en": "Adds presence detection from tado",
+    "nl": "Voegt aanwezigheids detectie toe van tado"
   },
   "category": [
     "internet"
@@ -20,38 +22,5 @@
   "author": {
     "name": "Hayo Roozekrans",
     "email": "athom@roozekrans.com"
-  },
-  "drivers": [
-    {
-      "id": "presence",
-      "name": {
-        "en": "tado presence"
-      },
-      "class": "sensor",
-      "capabilities": ["onoff"],
-      "pair": [
-        {
-          "id": "login_oauth2",
-          "template": "login_oauth2"
-        },
-        {
-          "id": "list_devices",
-          "template": "list_devices",
-          "navigation": {
-            "next": "add_devices"
-          }
-        },
-        {
-          "id": "add_devices",
-          "template": "add_devices"
-        }
-      ],
-      "repair": [
-        {
-          "id": "login_oauth2",
-          "template": "login_oauth2"
-        }
-      ]
-    }
-  ]
+  }
 }

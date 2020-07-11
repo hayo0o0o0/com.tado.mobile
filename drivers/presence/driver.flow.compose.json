@@ -1,0 +1,39 @@
+{
+    "triggers": [
+        {
+            "id": "mobile_athome_changed",
+            "title": {
+                "en": "Mobile Home/Away status changes",
+                "nl": "Mobiele Thuis/Afwezig status verandert"
+            },
+            "args": [
+				{
+					"type": "autocomplete",
+					"name": "mobile_device_selection",
+					"placeholder": {
+						"en": "Mobile device",
+						"nl": "Mobiel apparaat"
+					}
+				}
+			]
+        } ],
+        "conditions": [
+        {
+			"id": "mobile_athome_true",
+			"title": {
+				"en": "Is !{{at home|away}}",
+				"nl": "Is !{{thuis|afwezig}}"
+            },
+            "args": [
+				{
+					"type": "autocomplete",
+					"name": "mobile_device_selection",
+					"placeholder": {
+						"en": "Mobile device",
+						"nl": "Mobiel apparaat"
+					}
+				}
+			]
+		}
+    ]
+}

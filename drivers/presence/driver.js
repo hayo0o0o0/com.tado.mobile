@@ -1,24 +1,54 @@
 'use strict';
 
 const { OAuth2Driver } = require('homey-oauth2app');
+const Homey = require('homey');
 
 module.exports = class TadoMobileDriver extends OAuth2Driver {
-  
+
   onOAuth2Init() {
-    // Register Flow Cards etc.
+    new Homey.FlowCardCondition('mobile_athome_true')
+      .register()
+      .registerRunListener(async (args, state) => {
+        var conditionResult = false;
+        args.device.getStoreValue('mobileDevices').forEach(function (item) {
+          if (args.mobile_device_selection.id === item.id) {
+            if (item.settings.geoTrackingEnabled) {
+              if (item.location && (item.location !== null)) {
+                conditionResult = item.location.atHome
+              }
+            }
+          }
+        });
+        return conditionResult;
+      })
+      .getArgument('mobile_device_selection')
+      .registerAutocompleteListener(async (query, args) => {
+        const devices = [];
+        args.device.getStoreValue('mobileDevices').forEach(device => {
+          if (device.settings.geoTrackingEnabled) {
+            devices.push({
+              name: device.name,
+              id: device.id
+            });
+          }
+        })
+        return Promise.resolve(devices);
+      });
   }
-  
+
   async onPairListDevices({ oAuth2Client }) {
-    const things = await oAuth2Client.getMobileDevices();
-    return things.map(thing => {
-      return {
-        name: thing.name,
+    const { homes } = await oAuth2Client.getMe();
+    const devices = [];
+    await Promise.all(homes.map(async home => {
+      devices.push({
+        name: home.name,
         data: {
-          id: thing.id,
-        },
-      }
-    });
+          homeId: home.id
+        }
+      });
+    }));
+    return devices;
   }
-	
+
 }
 
