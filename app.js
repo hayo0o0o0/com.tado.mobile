@@ -2,8 +2,6 @@
 
 const TadoOAuth2Client = require('./lib/TadoOAuth2Client');
 const { OAuth2App } = require('homey-oauth2app');
-const Log = require('homey-log').Log;
-
 require('inspector').open(9229, '0.0.0.0', true);
 
 const SCOPES = [
@@ -29,7 +27,7 @@ class TadoMobile extends OAuth2App {
 			scopes: SCOPES,
 		});
 
-		Log..log('TadoMobile is running...');		
+		this.log('TadoMobile is running...');		
 	}
 }
 
