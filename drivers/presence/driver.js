@@ -6,8 +6,8 @@ const Homey = require('homey');
 module.exports = class TadoMobileDriver extends OAuth2Driver {
 
   onOAuth2Init() {
-    new Homey.FlowCardCondition('mobile_athome_true')
-      .register()
+    
+    this.homey.flow.getConditionCard('mobile_athome_true')
       .registerRunListener(async (args, state) => {
         var conditionResult = false;
         args.device.getStoreValue('mobileDevices').forEach(function (item) {
@@ -39,14 +39,14 @@ module.exports = class TadoMobileDriver extends OAuth2Driver {
   async onPairListDevices({ oAuth2Client }) {
     const { homes } = await oAuth2Client.getMe();
     const devices = [];
-    await Promise.all(homes.map(async home => {
+    homes.map(async home => {
       devices.push({
         name: home.name,
         data: {
           homeId: home.id
         }
       });
-    }));
+    });
     return devices;
   }
 

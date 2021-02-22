@@ -6,13 +6,13 @@ module.exports = class TadoHomeDevice extends OAuth2Device {
     async onOAuth2Init() {
         const { homeId } = this.getData();
         this._homeId = homeId;
-
+        this.log('Starting up home device...');
         this.startPolling()
 
-        this._flowTriggerMobileAtHome = new Homey.FlowCardTriggerDevice('mobile_athome_changed');
-        this._flowTriggerMobileAtHome.register()
+        this._flowTriggerMobileAtHome = this.homey.flow.getActionCard('mobile_athome_changed')
+        this._flowTriggerMobileAtHome
             .registerRunListener((args, state) => {
-                return Promise.resolve(args.mobile_device_selection.id === state.mobile_id);
+                return args.mobile_device_selection.id === state.mobile_id;
             })
             .getArgument('mobile_device_selection')
             .registerAutocompleteListener((query, args) => {
@@ -25,7 +25,7 @@ module.exports = class TadoHomeDevice extends OAuth2Device {
                         });
                     }
                 })
-                return Promise.resolve(devices);
+                return devices;
             });
     }
 
@@ -35,6 +35,7 @@ module.exports = class TadoHomeDevice extends OAuth2Device {
 
     async startPolling() {
         while (true) {
+            this.log('Checking presence');
             this.checkPresence();
             await delay(10000);
         }
@@ -73,8 +74,7 @@ module.exports = class TadoHomeDevice extends OAuth2Device {
                             if ((previousDevice.location === null) || (previousDevice.location.atHome !== location.atHome)) {
                                 this._flowTriggerMobileAtHome.trigger(this,
                                     { 'mobile_athome': location.atHome },
-                                    { 'mobile_id': device.id })
-                                    .catch(this.error);
+                                    { 'mobile_id': device.id });
                             }
                         }
                     }
