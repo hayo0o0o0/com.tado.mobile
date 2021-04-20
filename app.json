@@ -21,5 +21,88 @@
   "author": {
     "name": "Hayo Roozekrans",
     "email": "athom@roozekrans.com"
-  }
+  },
+  "flow": {
+    "triggers": [
+      {
+        "id": "mobile_athome_changed",
+        "title": {
+          "en": "Mobile Home/Away status changes",
+          "nl": "Mobiele Thuis/Afwezig status verandert"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=presence"
+          },
+          {
+            "type": "autocomplete",
+            "name": "mobile_device_selection",
+            "placeholder": {
+              "en": "Mobile device",
+              "nl": "Mobiel apparaat"
+            }
+          }
+        ]
+      }
+    ],
+    "conditions": [
+      {
+        "id": "mobile_athome_true",
+        "title": {
+          "en": "Is !{{at home|away}}",
+          "nl": "Is !{{thuis|afwezig}}"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=presence"
+          },
+          {
+            "type": "autocomplete",
+            "name": "mobile_device_selection",
+            "placeholder": {
+              "en": "Mobile device",
+              "nl": "Mobiel apparaat"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "drivers": [
+    {
+      "id": "presence",
+      "name": {
+        "en": "Tado home"
+      },
+      "class": "sensor",
+      "capabilities": [],
+      "pair": [
+        {
+          "id": "login_credentials",
+          "template": "login_credentials"
+        },
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ],
+      "repair": [
+        {
+          "id": "login_credentials",
+          "template": "login_credentials"
+        }
+      ]
+    }
+  ]
 }

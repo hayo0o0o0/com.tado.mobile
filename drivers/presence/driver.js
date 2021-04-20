@@ -1,20 +1,18 @@
 'use strict';
 
 const { OAuth2Driver } = require('homey-oauth2app');
-const Homey = require('homey');
 
 module.exports = class TadoMobileDriver extends OAuth2Driver {
 
   onOAuth2Init() {
-    
     this.homey.flow.getConditionCard('mobile_athome_true')
       .registerRunListener(async (args, state) => {
-        var conditionResult = false;
-        args.device.getStoreValue('mobileDevices').forEach(function (item) {
+        let conditionResult = false;
+        args.device.getStoreValue('mobileDevices').forEach(item => {
           if (args.mobile_device_selection.id === item.id) {
             if (item.settings.geoTrackingEnabled) {
               if (item.location && (item.location !== null)) {
-                conditionResult = item.location.atHome
+                conditionResult = item.location.atHome;
               }
             }
           }
@@ -31,7 +29,7 @@ module.exports = class TadoMobileDriver extends OAuth2Driver {
               id: device.id
             });
           }
-        })
+        });
         return Promise.resolve(devices);
       });
   }
@@ -50,5 +48,4 @@ module.exports = class TadoMobileDriver extends OAuth2Driver {
     return devices;
   }
 
-}
-
+};

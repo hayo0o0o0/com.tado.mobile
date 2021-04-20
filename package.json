@@ -3,12 +3,15 @@
   "version": "1.0.0",
   "main": "app.js",
   "devDependencies": {
-    "eslint": "^7.20.0",
+    "eslint": "^7.24.0",
     "eslint-config-athom": "^2.1.0",
     "homey": "2.9.7"
   },
   "dependencies": {
     "delay": "^4.4.1",
-    "homey-oauth2app": "^3.0.7"
+    "homey-oauth2app": "^3.2.1"
+  },
+  "engines": {
+    "node": ">=12.16.1"
   }
 }
