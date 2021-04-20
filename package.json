@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "delay": "^4.4.1",
+    "homey-log": "^2.0.1",
     "homey-oauth2app": "^3.2.1"
   },
   "engines": {

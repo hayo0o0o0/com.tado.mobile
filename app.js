@@ -1,6 +1,7 @@
 'use strict';
 
 const { OAuth2App } = require('homey-oauth2app');
+const { Log } = require('homey-log');
 const TadoOAuth2Client = require('./lib/TadoOAuth2Client');
 
 require('inspector').open(9229, '0.0.0.0', true);
@@ -18,6 +19,7 @@ const SCOPES = [
 class TadoMobile extends OAuth2App {
 
   onOAuth2Init() {
+    this.homeyLog = new Log({ homey: this.homey });
     // this.enableOAuth2Debug();
     this.setOAuth2Config({
       client: TadoOAuth2Client,
