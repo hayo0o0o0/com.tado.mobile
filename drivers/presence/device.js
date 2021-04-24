@@ -3,6 +3,8 @@
 const { OAuth2Device } = require('homey-oauth2app');
 const delay = require('delay');
 
+const POLL_INTERVAL = 1 * 60 * 1000; // 1 minutes in ms
+
 module.exports = class TadoHomeDevice extends OAuth2Device {
 
   async onOAuth2Init() {
@@ -40,7 +42,7 @@ module.exports = class TadoHomeDevice extends OAuth2Device {
     while (shouldRun) {
       this.log('Checking presence');
       this.checkPresence();
-      await delay(10000);
+      await delay(POLL_INTERVAL);
     }
   }
 

@@ -27,7 +27,7 @@ class TadoMobile extends OAuth2App {
       apiUrl: 'https://my.tado.com/api/v2',
       tokenUrl: 'https://auth.tado.com/oauth/token',
       authorizationUrl: 'https://auth.tado.com/oauth/authorize',
-      scopes: SCOPES,
+      scopes: SCOPES
     });
 
     this.log('TadoMobile is running...');
