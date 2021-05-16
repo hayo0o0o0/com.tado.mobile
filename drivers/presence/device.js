@@ -56,7 +56,6 @@ module.exports = class TadoHomeDevice extends OAuth2Device {
       .catch(err => {
         this.error(err);
         this.setUnavailable(err);
-        throw err;
       });
   }
 
