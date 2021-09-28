@@ -7,8 +7,8 @@
     "capabilities": [],
     "pair": [
       {
-        "id": "login_credentials",
-        "template": "login_credentials"
+        "id": "login_oauth2",
+        "template": "login_oauth2"
       },
       {
         "id": "list_devices",
@@ -24,8 +24,8 @@
     ],
     "repair": [
       {
-        "id": "login_credentials",
-        "template": "login_credentials"
+        "id": "login_oauth2",
+        "template": "login_oauth2"
       }
     ]
 }
