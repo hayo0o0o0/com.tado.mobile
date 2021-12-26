@@ -1,3 +1,4 @@
 env.json
 launch.json
 node_modules/
+build/

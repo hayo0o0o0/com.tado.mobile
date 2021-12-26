@@ -1,6 +1,8 @@
 'use strict';
 
 const { OAuth2Device } = require('homey-oauth2app');
+const logger = require('fluent-logger');
+
 const delay = require('delay');
 
 const POLL_INTERVAL = 1 * 60 * 1000; // 1 minutes in ms
@@ -40,7 +42,7 @@ module.exports = class TadoHomeDevice extends OAuth2Device {
   async startPolling() {
     const shouldRun = true;
     while (shouldRun) {
-      this.log('Checking presence');
+      logger.emit('debug', { message: `Checking presence for home id: ${this._homeId}` });      
       this.checkPresence();
       await delay(POLL_INTERVAL);
     }
@@ -54,6 +56,7 @@ module.exports = class TadoHomeDevice extends OAuth2Device {
         this.parsePresence(response);
       })
       .catch(err => {
+        logger.emit('error', {message: `Error checking presence: ${err}`})
         this.error(err);
         this.setUnavailable(err);
       });
@@ -63,6 +66,7 @@ module.exports = class TadoHomeDevice extends OAuth2Device {
     try {
       let previousResponse = this.getStoreValue('mobileDevices');
       if (previousResponse === null) {
+        logger.emit('debug', {message: `No previous response pushing ${response.length}`})
         previousResponse = [];
         response.forEach(device => {
           previousResponse.push({
@@ -71,14 +75,17 @@ module.exports = class TadoHomeDevice extends OAuth2Device {
           });
         });
       }
-      response.forEach(device => {
+      response.forEach(device => {        
         previousResponse.forEach(previousDevice => {
+          logger.emit('debug', {message: `checking for  ${device.id}`})
           if (device.id === previousDevice.id) {
             if (device.settings.geoTrackingEnabled) {
               const { location } = device;
               if (location && location !== null) {
-                if (previousDevice.location === null
+                logger.emit('debug', { message: `Checking state for: ${device.name} atHome: ${location.atHome}` });
+                if (!previousDevice.location
                     || previousDevice.location.atHome !== location.atHome) {
+                  logger.emit('debug', { message: `Changing state for: ${device.name} to atHome: ${location.atHome}` });
                   this.log(`Changing state for: ${device.name} to atHome: ${location.atHome}`);
                   this._flowTriggerMobileAtHome.trigger(
                     this,
@@ -93,6 +100,7 @@ module.exports = class TadoHomeDevice extends OAuth2Device {
       });
       this.setStoreValue('mobileDevices', response);
     } catch (err) {
+      logger.emit('error', { message: "Error parsing response: " + err });
       this.error(err);
       throw err;
     }
